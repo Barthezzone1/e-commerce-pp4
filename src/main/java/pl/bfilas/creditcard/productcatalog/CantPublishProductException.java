@@ -1,4 +1,4 @@
-package pl.bfilas.productcatalog;
+package pl.bfilas.creditcard.productcatalog;
 
 public class CantPublishProductException
         extends IllegalStateException {

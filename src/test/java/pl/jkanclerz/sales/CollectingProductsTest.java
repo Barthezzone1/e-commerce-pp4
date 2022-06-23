@@ -2,6 +2,12 @@ package pl.jkanclerz.sales;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.jkanclerz.sales.cart.CartStorage;
+import pl.jkanclerz.sales.offer.Offer;
+import pl.jkanclerz.sales.payment.DummyPaymentGateway;
+import pl.jkanclerz.sales.products.ListProductDetailsProvider;
+import pl.jkanclerz.sales.products.ProductDetails;
+import pl.jkanclerz.sales.reservation.ReservationStorage;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

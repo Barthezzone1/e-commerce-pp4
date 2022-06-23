@@ -4,11 +4,19 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import pl.jkanclerz.creditcard.NameProvider;
+import pl.jkanclerz.payu.PayU;
 import pl.jkanclerz.productcatalog.MapProductStorage;
 import pl.jkanclerz.productcatalog.ProductCatalog;
 import pl.jkanclerz.productcatalog.ProductData;
 import pl.jkanclerz.productcatalog.ProductStorage;
 import pl.jkanclerz.sales.*;
+import pl.jkanclerz.sales.cart.CartStorage;
+import pl.jkanclerz.sales.payment.DummyPaymentGateway;
+import pl.jkanclerz.sales.payment.PayUPaymentGateway;
+import pl.jkanclerz.sales.payment.PaymentGateway;
+import pl.jkanclerz.sales.products.ProductDetails;
+import pl.jkanclerz.sales.products.ProductDetailsProvider;
+import pl.jkanclerz.sales.reservation.ReservationStorage;
 
 import java.math.BigDecimal;
 
@@ -46,11 +54,18 @@ public class App {
     }
 
     @Bean
-    Sales createSales(ProductDetailsProvider productDetailsProvider) {
+    PaymentGateway createPaymentGateway() {
+        return new PayUPaymentGateway(
+                new PayU(System.getenv("PAYU_MERCHANT_POS_ID")));
+
+    }
+
+    @Bean
+    Sales createSales(ProductDetailsProvider productDetailsProvider, PaymentGateway paymentGateway) {
         return new Sales(
                 new CartStorage(),
                 productDetailsProvider,
-                new DummyPaymentGateway(),
+                paymentGateway,
                 new ReservationStorage()
         );
     }

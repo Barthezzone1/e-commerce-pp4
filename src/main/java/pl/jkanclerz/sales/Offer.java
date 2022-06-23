@@ -1,33 +1,19 @@
 package pl.jkanclerz.sales;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Offer {
-    BigDecimal total;
-    private int size;
-    List<OfferItem> items;
+    private final BigDecimal total;
+    private final int itemsCount;
 
-    public Offer() {
-        this.total = BigDecimal.ZERO;
-        this.items = new ArrayList<>();
-        this.size = 0;
+    public Offer(BigDecimal total, int itemsCount) {
 
-    }
-
-    public Offer(BigDecimal total, int size) {
         this.total = total;
-        this.items = new ArrayList<>();
-        this.size = size;
+        this.itemsCount = itemsCount;
     }
 
-    public static Offer emptyOffer() {
-        return new Offer();
-    }
-
-    public static Offer of(BigDecimal total, int size) {
-        return new Offer(total, size);
+    public static Offer empty() {
+        return new Offer(BigDecimal.ZERO, 0);
     }
 
     public BigDecimal getTotal() {
@@ -35,6 +21,6 @@ public class Offer {
     }
 
     public int getItemsCount() {
-        return size;
+        return itemsCount;
     }
 }

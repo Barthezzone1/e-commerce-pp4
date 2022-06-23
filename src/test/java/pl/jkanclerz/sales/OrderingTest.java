@@ -2,6 +2,15 @@ package pl.jkanclerz.sales;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.jkanclerz.sales.cart.CartStorage;
+import pl.jkanclerz.sales.offer.Offer;
+import pl.jkanclerz.sales.offer.OfferNotMatchedException;
+import pl.jkanclerz.sales.payment.DummyPaymentGateway;
+import pl.jkanclerz.sales.payment.PaymentData;
+import pl.jkanclerz.sales.products.ListProductDetailsProvider;
+import pl.jkanclerz.sales.products.ProductDetails;
+import pl.jkanclerz.sales.reservation.Reservation;
+import pl.jkanclerz.sales.reservation.ReservationStorage;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -31,7 +40,7 @@ public class OrderingTest {
         Offer seenOffer = sales.getCurrentOffer(customerId);
 
         //when //act
-        PaymentData payment = sales.acceptOffer(customerId, seenOffer, exampleCustomerData());
+        PaymentData payment = sales.acceptOffer(customerId, exampleCustomerData());
 
         //then // assert
         String reservationId = payment.getReservationId();
@@ -46,7 +55,6 @@ public class OrderingTest {
         assertTrue(optionalReservation.isPresent());
     }
 
-    @Test
     void dennayPurchaseWhenOfferDifferentThenSeenOffer() {
         String productId = thereIsExampleProduct();
         Sales sales = thereIsSalesModule();
@@ -59,7 +67,6 @@ public class OrderingTest {
         assertThrows(OfferNotMatchedException.class, () -> {
             sales.acceptOffer(
                     customerId,
-                    newOffer,
                     exampleCustomerData());
         });
     }

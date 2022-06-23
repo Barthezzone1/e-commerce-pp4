@@ -1,4 +1,4 @@
-package pl.jkanclerz.sales;
+package pl.jkanclerz.sales.payment;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

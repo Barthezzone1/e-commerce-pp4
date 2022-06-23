@@ -1,4 +1,4 @@
 package pl.jkanclerz.sales;
 
-public interface PaymentGateway {
+public class PaymentGateway {
 }

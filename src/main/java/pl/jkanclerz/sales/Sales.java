@@ -1,17 +1,31 @@
 package pl.jkanclerz.sales;
 
+import pl.jkanclerz.sales.cart.Cart;
+import pl.jkanclerz.sales.cart.CartItem;
+import pl.jkanclerz.sales.cart.CartStorage;
+import pl.jkanclerz.sales.offer.Offer;
+import pl.jkanclerz.sales.offer.OfferMaker;
+import pl.jkanclerz.sales.payment.DummyPaymentGateway;
+import pl.jkanclerz.sales.payment.PaymentData;
+import pl.jkanclerz.sales.payment.PaymentGateway;
+import pl.jkanclerz.sales.products.ProductDetails;
+import pl.jkanclerz.sales.products.ProductDetailsProvider;
+import pl.jkanclerz.sales.products.ProductNotAvailableException;
+import pl.jkanclerz.sales.reservation.Reservation;
+import pl.jkanclerz.sales.reservation.ReservationStorage;
+
 import java.util.UUID;
 
 public class Sales {
     CartStorage cartStorage;
     ProductDetailsProvider productDetailsProvider;
-    DummyPaymentGateway paymentGateway;
+    PaymentGateway paymentGateway;
     ReservationStorage reservationStorage;
 
     public Sales(
             CartStorage cartStorage,
             ProductDetailsProvider productDetailsProvider,
-            DummyPaymentGateway paymentGateway,
+            PaymentGateway paymentGateway,
             ReservationStorage reservationStorage) {
         this.cartStorage = cartStorage;
         this.productDetailsProvider = productDetailsProvider;
@@ -40,17 +54,18 @@ public class Sales {
 
         cart.addItem(CartItem.of(
                 productId,
-                productDetails.name,
-                productDetails.price));
+                productDetails.getName(),
+                productDetails.getPrice()));
 
         cartStorage.save(customerId, cart);
     }
 
-    public PaymentData acceptOffer(String customerId, Offer seenOffer, ClientData clientData) {
+    public PaymentData acceptOffer(String customerId, ClientData clientData) {
         Cart cart = cartStorage.getForCustomer(customerId)
                 .orElse(Cart.empty());
 
         Offer currentOffer = calculateOffer(cart);
+
         String id = UUID.randomUUID().toString();
         Reservation reservation = Reservation.of(
                 id,

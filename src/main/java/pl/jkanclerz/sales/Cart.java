@@ -1,45 +1,25 @@
 package pl.jkanclerz.sales;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cart {
-    Map<String, CartItem> items;
+
+    List<CartItem> items;
 
     public Cart() {
-        this.items = new HashMap<>();
+        this.items = new ArrayList<>();
     }
 
     public static Cart empty() {
         return new Cart();
     }
 
-    public int getItemsCount() {
-        return items.size();
-    }
-
-    public void addItem(CartItem item) {
-        if (!isItemAlreadyExists(item)) {
-            doAddToCart(item);
-        } else {
-            increaseQuantity(item);
-        }
-    }
-
-    private void increaseQuantity(CartItem item) {
-        items.get(item.getProductId())
-                .increaseQuantity();
-    }
-
-    private void doAddToCart(CartItem item) {
-        items.put(item.getProductId(), item);
-    }
-
-    private boolean isItemAlreadyExists(CartItem item) {
-        return items.get(item.getProductId()) != null;
+    public void add(CartItem cartItem) {
+        items.add(cartItem);
     }
 
     public List<CartItem> getItems() {
-        return new ArrayList<>(items.values());
+        return items;
     }
 }
